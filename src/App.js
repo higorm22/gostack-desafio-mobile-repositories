@@ -16,8 +16,14 @@ export default function App() {
   const [repositories, setRepositories]=useState([]);
 
   useEffect(() => {
-    api.get('repositories').then(response => {
-      setRepositorioes(response.data);
+    api.get('/repositories').then(response => {
+      console.log('LISTA DE REPOSITORIES',response);
+      setRepositories(response.data);
+    }).catch((error) => {
+      console.log('HOUVE UM ERRO',error);
+      if(error.message){
+        console.log('Erro:',error.message);
+      }
     });
   }, []);
 
@@ -28,7 +34,7 @@ export default function App() {
     console.log(response);
     const likeRepository = response.data;
 
-    const repositoriesUp = repositories.map(reposytory => {
+    const repositoriesUp = repositories.map(repository => {
       if (repository.id === id){
         return likeRepository;
       } else {
@@ -41,7 +47,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+    <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
       <SafeAreaView style={styles.container}>
         <FlatList
           data={repositories}
@@ -77,7 +83,7 @@ export default function App() {
                 <Text style={styles.buttonText}>Curtir</Text>
               </TouchableOpacity>
             </View>
-          )}
+          )} 
         />
       </SafeAreaView>
     </>
